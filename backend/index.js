@@ -8,6 +8,12 @@ var cheerio = require('cheerio');
 
 const port = process.env.port || 4000;
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.get('/scrape',(req,res) => {
   request('https://blog.hubspot.com/marketing/beginner-blogger-mistakes', function (error, response, html) {
   if (!error && response.statusCode == 200) {
@@ -73,7 +79,7 @@ app.get('/api/posts',(req,res)=>{
     }
     ]
     };
-    res.setHeader('Content-Type', 'application/json');
+
     res.status(200).json(posts);
 })
 
